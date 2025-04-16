@@ -32,3 +32,30 @@ body {
   background-color: #e9ecef;
   border-radius: 5px;
 }
+
+.badge-Food {
+  background-color: #28a745;
+}
+.badge-Travel {
+  background-color: #17a2b8;
+}
+.badge-Shopping {
+  background-color: #ffc107;
+}
+.badge-Bills {
+  background-color: #fd7e14;
+}
+.badge-Others {
+  background-color: #6c757d;
+}
+
+.chart-container {
+  max-width: 400px; /* Maximum width */
+  max-height: 400px; /* Maximum height */
+  width: 100%; /* Responsive width */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.expense-item {
+  transition: background-color 0.3s ease;
+}

@@ -1,74 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
+  
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expenses Tracker</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"
     />
+    <title>
+      Expenses Tracker
+    </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet" />
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="style.css" />
   </head>
+  
   <body>
     <div class="container mt-5">
-      <h1 class="text-center mb-4">Expenses Tracker 💰</h1>
-
+      <h1 class="text-center mb-4">
+        Expenses Tracker 💰
+      </h1>
       <!-- Add Expense Form -->
       <div class="card mb-4">
         <div class="card-body">
           <form id="expenseForm">
             <div class="row g-3">
-              <div class="col-md-5">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="expenseName"
-                  placeholder="Expense name"
-                  required
-                />
+              <!-- Expense Name -->
+              <div class="col-md-4">
+                <input type="text" class="form-control" id="expenseName" placeholder="Expense name"
+                required />
               </div>
+              <!-- Category -->
               <div class="col-md-3">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="expenseAmount"
-                  placeholder="Amount"
-                  required
+                <select class="form-select" id="expenseCategory" required>
+                  <option value="" disabled selected>
+                    Select category
+                  </option>
+                  <option value="Food">
+                    🍽️ Food
+                  </option>
+                  <option value="Travel">
+                    ✈️ Travel
+                  </option>
+                  <option value="Shopping">
+                    🛍️ Shopping
+                  </option>
+                  <option value="Bills">
+                    📄 Bills
+                  </option>
+                  <option value="Others">
+                    📦 Others
+                  </option>
+                </select>
+              </div>
+              <!-- Amount -->
+              <div class="col-md-2">
+                <input type="number" class="form-control" id="expenseAmount" placeholder="Amount"
+                required />
+              </div>
+              <!-- Date Picker -->
+              <div class="col-md-2">
+                <input type="date" class="form-control" id="expenseDate" required onkeydown="return false;"
                 />
               </div>
-              <div class="col-md-3">
-                <input
-                  type="date"
-                  class="form-control"
-                  id="expenseDate"
-                  required
-                />
-              </div>
+              <!-- Submit Button -->
               <div class="col-md-1">
-                <button type="submit" class="btn btn-primary w-100">Add</button>
+                <button type="submit" class="btn btn-primary w-100">
+                  Add
+                </button>
               </div>
             </div>
           </form>
         </div>
       </div>
-
-      <!-- Expenses List -->
-      <div class="card">
+      <!-- Search Bar -->
+      <div class="mb-4">
+        <input type="text" class="form-control" id="searchExpense" placeholder="Search by name, amount, or category"
+        />
+      </div>
+      <!-- Filter Options -->
+      <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">Expenses List</h5>
-          <div id="expensesList" class="mb-4"></div>
-          <div class="total-expense">
-            <h4>Total: ₹<span id="totalAmount">0</span></h4>
+          <div class="row g-3 align-items-end">
+            <!-- Filter by Category -->
+            <div class="col-md-4">
+              <label for="filterCategory" class="form-label">
+                Filter by Category
+              </label>
+              <select class="form-select" id="filterCategory">
+                <option value="">
+                  All Categories
+                </option>
+                <option value="Food">
+                  Food
+                </option>
+                <option value="Travel">
+                  Travel
+                </option>
+                <option value="Shopping">
+                  Shopping
+                </option>
+                <option value="Bills">
+                  Bills
+                </option>
+                <option value="Others">
+                  Others
+                </option>
+              </select>
+            </div>
+            <!-- Filter by Date Range -->
+            <div class="col-md-2">
+              <label for="filterStartDate" class="form-label">
+                Start Date
+              </label>
+              <input type="date" class="form-control" id="filterStartDate" />
+            </div>
+            <div class="col-md-2">
+              <label for="filterEndDate" class="form-label">
+                End Date
+              </label>
+              <input type="date" class="form-control" id="filterEndDate" />
+            </div>
+            <!-- Filter Apply & Clear -->
+            <div class="col-md-2">
+              <button class="btn btn-primary w-100" onclick="applyFilters()">
+                Apply
+              </button>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary w-100" onclick="clearFilters()">
+                Clear Filters
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- App JS -->
-    <script src="script.js"></script>
+      <!-- Budget Input -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            Set Your Monthly Budget
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <input type="number" class="form-control" id="monthlyBudget" placeholder="Set Budget"
+              />
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-success w-100" onclick="saveBudget()">
+                Save Budget
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Expenses List -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            Expenses List
+          </h5>
+          <div id="expensesList" class="mb-4">
+          </div>
+          <div class="total-expense">
+            <h4>
+              Total: ₹
+              <span id="totalAmount">
+                0
+              </span>
+            </h4>
+          </div>
+        </div>
+      </div>
+      <!-- Graphical Reports Section -->
+      <div class="card m-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            Expenses Graphical Report
+          </h5>
+          <canvas id="expensesChart" class="chart-container">
+          </canvas>
+        </div>
+      </div>
+      <!-- Export Buttons -->
+      <div class="card m-4">
+        <div class="card-body">
+          <h5 class="card-title">
+            Export Expenses
+          </h5>
+          <div class="d-flex justify-content-start gap-3">
+            <button id="exportCSV" class="btn btn-secondary">
+              Export to CSV
+            </button>
+            <button id="exportPDF" class="btn btn-secondary">
+              Export to PDF
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- External JS Libraries -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js">
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js">
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+      </script>
+      <!-- App JS (script.js) -->
+      <script src="script.js">
+      </script>
   </body>
+
 </html>
