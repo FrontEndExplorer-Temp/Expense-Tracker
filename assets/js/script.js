@@ -10,8 +10,10 @@ const totalAmountElement = document.getElementById("totalAmount");
 
 // Budget tracking
 const budgetMessageElement = document.createElement("div");
-budgetMessageElement.className = "budget-message mt-3 fw-bold";
-document.querySelector(".container").appendChild(budgetMessageElement);
+budgetMessageElement.className = "fw-semibold";
+document
+  .getElementById("dashboardBudgetSummary")
+  .appendChild(budgetMessageElement);
 
 // Search input
 document
@@ -103,6 +105,15 @@ function renderExpenses(data = expenses) {
   let total = 0;
   const categoryData = {};
 
+  const totalAmount = expenses.reduce((acc, curr) => acc + curr.amount, 0);
+  document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
+
+  // Get budget from localStorage or fallback to 0
+  const savedBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 0;
+
+  // Now update the cards
+  updateSummaryCards(totalAmount, savedBudget);
+
   data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   if (data.length === 0) {
@@ -169,7 +180,7 @@ function createChart(categoryData) {
   const colors = ["#28a745", "#17a2b8", "#ffc107", "#fd7e14", "#6c757d"];
 
   expenseChart = new Chart(ctx, {
-    type: "pie",
+    type: "bar",
     data: {
       labels,
       datasets: [
@@ -238,12 +249,18 @@ function renderBudgetFeedback(total) {
 }
 
 function exportToCSV() {
+  if (!currentlyRenderedExpenses.length) {
+    alert("No expenses to export.");
+    return;
+  }
+
   const csvData = currentlyRenderedExpenses.map((exp) => ({
     Name: exp.name,
     Category: exp.category,
     Amount: exp.amount,
     Date: formatDate(exp.date),
   }));
+
   const csv = Papa.unparse(csvData);
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
@@ -253,21 +270,37 @@ function exportToCSV() {
 }
 
 function exportToPDF() {
+  if (!currentlyRenderedExpenses.length) {
+    alert("No expenses to export.");
+    return;
+  }
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+
+  doc.setFontSize(18);
   doc.text("Expense Report", 20, 20);
+
+  doc.setFontSize(12);
   doc.text("Name", 20, 30);
-  doc.text("Category", 60, 30);
-  doc.text("Amount", 100, 30);
-  doc.text("Date", 140, 30);
+  doc.text("Category", 70, 30);
+  doc.text("Amount", 110, 30);
+  doc.text("Date", 150, 30);
 
   let y = 40;
+
   currentlyRenderedExpenses.forEach((exp) => {
     doc.text(exp.name, 20, y);
-    doc.text(exp.category, 60, y);
-    doc.text(`₹${exp.amount.toFixed(2)}`, 100, y);
-    doc.text(formatDate(exp.date), 140, y);
+    doc.text(exp.category, 70, y);
+    doc.text(`₹${exp.amount.toFixed(2)}`, 110, y);
+    doc.text(formatDate(exp.date), 150, y);
     y += 10;
+
+    // Avoid writing off the page
+    if (y > 280) {
+      doc.addPage();
+      y = 20;
+    }
   });
 
   doc.save("expenses.pdf");
@@ -281,4 +314,29 @@ const todayDate = new Date().toISOString().split("T")[0];
 document.getElementById("expenseDate").setAttribute("max", todayDate);
 document.querySelectorAll('input[type="date"]').forEach((input) => {
   input.addEventListener("keydown", (e) => e.preventDefault());
+});
+
+function updateSummaryCards(total = 0, budget = 0) {
+  const remaining = budget - total;
+
+  document.getElementById("summaryTotalExpenses").textContent =
+    total.toFixed(2);
+  document.getElementById("summaryBudgetLimit").textContent = budget.toFixed(2);
+  document.getElementById("summaryRemaining").textContent =
+    remaining.toFixed(2);
+}
+
+document.getElementById("exportCSV").addEventListener("click", exportToCSV);
+document.getElementById("exportPDF").addEventListener("click", exportToPDF);
+
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("Dark mode script loaded ✅");
+
+  const toggleBtn = document.getElementById("darkModeToggle");
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    toggleBtn.textContent = document.body.classList.contains("dark-mode")
+      ? "☀️ Light Mode"
+      : "🌙 Dark Mode";
+  });
 });
