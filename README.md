@@ -6,7 +6,7 @@ A simple, responsive web app to manage your daily expenses. Built with **HTML**,
 
 ## 📸 Demo
 
-![Screenshot of Expense Tracker](./assets/images/screenshot.png)
+![Screenshot of Expense Tracker](./assets/images/screenshot.PNG)
 
 ---
 
