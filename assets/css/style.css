@@ -230,8 +230,6 @@ button[disabled] {
   cursor: not-allowed !important;
 }
 
-
-
 /* Dark Mode Styles */
 body.dark-mode .form-control,
 body.dark-mode .form-select,
