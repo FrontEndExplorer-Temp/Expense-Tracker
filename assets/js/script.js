@@ -5,14 +5,18 @@ let expenseChart = null;
 let currentlyRenderedExpenses = [];
 
 const form = document.getElementById("expenseForm");
+const addButton = form.querySelector("button[type='submit']");
 const expensesList = document.getElementById("expensesList");
 const totalAmountElement = document.getElementById("totalAmount");
+
+
 
 // Budget tracking
 const budgetMessageElement = document.createElement("div");
 budgetMessageElement.className = "fw-semibold";
-document.getElementById("dashboardBudgetSummary").appendChild(budgetMessageElement);
-
+document
+  .getElementById("dashboardBudgetSummary")
+  .appendChild(budgetMessageElement);
 
 // Search input
 document
@@ -23,6 +27,27 @@ document.getElementById("exportCSV").addEventListener("click", exportToCSV);
 document.getElementById("exportPDF").addEventListener("click", exportToPDF);
 
 form.addEventListener("submit", addExpense);
+
+// Disable button initially
+addButton.disabled = true;
+
+  // Function to validate inputs and enable/disable the button
+  form.addEventListener("input", () => {
+    const name = document.getElementById("expenseName").value.trim();
+    const amount = parseFloat(document.getElementById("expenseAmount").value);
+    const date = document.getElementById("expenseDate").value;
+    const category = document.getElementById("expenseCategory").value;
+
+    const isValid =
+      name &&
+      !isNaN(amount) &&
+      amount > 0 &&
+      date &&
+      category &&
+      category !== "";
+
+    addButton.disabled = !isValid;
+  });
 
 function addExpense(e) {
   e.preventDefault();
@@ -105,13 +130,13 @@ function renderExpenses(data = expenses) {
   const categoryData = {};
 
   const totalAmount = expenses.reduce((acc, curr) => acc + curr.amount, 0);
-document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
+  document.getElementById("totalAmount").textContent = totalAmount.toFixed(2);
 
-// Get budget from localStorage or fallback to 0
-const savedBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 0;
+  // Get budget from localStorage or fallback to 0
+  const savedBudget = parseFloat(localStorage.getItem("monthlyBudget")) || 0;
 
-// Now update the cards
-updateSummaryCards(totalAmount, savedBudget);
+  // Now update the cards
+  updateSummaryCards(totalAmount, savedBudget);
 
   data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -268,7 +293,6 @@ function exportToCSV() {
   link.click();
 }
 
-
 function exportToPDF() {
   if (!currentlyRenderedExpenses.length) {
     alert("No expenses to export.");
@@ -306,7 +330,6 @@ function exportToPDF() {
   doc.save("expenses.pdf");
 }
 
-
 // Initial render
 renderExpenses();
 
@@ -317,27 +340,27 @@ document.querySelectorAll('input[type="date"]').forEach((input) => {
   input.addEventListener("keydown", (e) => e.preventDefault());
 });
 
+function updateSummaryCards(total = 0, budget = 0) {
+  const remaining = budget - total;
 
-  function updateSummaryCards(total = 0, budget = 0) {
-    const remaining = budget - total;
-  
-    document.getElementById("summaryTotalExpenses").textContent = total.toFixed(2);
-    document.getElementById("summaryBudgetLimit").textContent = budget.toFixed(2);
-    document.getElementById("summaryRemaining").textContent = remaining.toFixed(2);
-  }
-  
-  document.getElementById("exportCSV").addEventListener("click", exportToCSV);
+  document.getElementById("summaryTotalExpenses").textContent =
+    total.toFixed(2);
+  document.getElementById("summaryBudgetLimit").textContent = budget.toFixed(2);
+  document.getElementById("summaryRemaining").textContent =
+    remaining.toFixed(2);
+}
+
+document.getElementById("exportCSV").addEventListener("click", exportToCSV);
 document.getElementById("exportPDF").addEventListener("click", exportToPDF);
 
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   console.log("Dark mode script loaded ✅");
 
-  const toggleBtn = document.getElementById('darkModeToggle');
-  toggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    toggleBtn.textContent = document.body.classList.contains('dark-mode')
-      ? '☀️ Light Mode'
-      : '🌙 Dark Mode';
+  const toggleBtn = document.getElementById("darkModeToggle");
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    toggleBtn.textContent = document.body.classList.contains("dark-mode")
+      ? "☀️ Light Mode"
+      : "🌙 Dark Mode";
   });
 });
