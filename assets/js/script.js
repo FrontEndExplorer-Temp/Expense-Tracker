@@ -9,8 +9,6 @@ const addButton = form.querySelector("button[type='submit']");
 const expensesList = document.getElementById("expensesList");
 const totalAmountElement = document.getElementById("totalAmount");
 
-
-
 // Budget tracking
 const budgetMessageElement = document.createElement("div");
 budgetMessageElement.className = "fw-semibold";
@@ -31,23 +29,18 @@ form.addEventListener("submit", addExpense);
 // Disable button initially
 addButton.disabled = true;
 
-  // Function to validate inputs and enable/disable the button
-  form.addEventListener("input", () => {
-    const name = document.getElementById("expenseName").value.trim();
-    const amount = parseFloat(document.getElementById("expenseAmount").value);
-    const date = document.getElementById("expenseDate").value;
-    const category = document.getElementById("expenseCategory").value;
+// Function to validate inputs and enable/disable the button
+form.addEventListener("input", () => {
+  const name = document.getElementById("expenseName").value.trim();
+  const amount = parseFloat(document.getElementById("expenseAmount").value);
+  const date = document.getElementById("expenseDate").value;
+  const category = document.getElementById("expenseCategory").value;
 
-    const isValid =
-      name &&
-      !isNaN(amount) &&
-      amount > 0 &&
-      date &&
-      category &&
-      category !== "";
+  const isValid =
+    name && !isNaN(amount) && amount > 0 && date && category && category !== "";
 
-    addButton.disabled = !isValid;
-  });
+  addButton.disabled = !isValid;
+});
 
 function addExpense(e) {
   e.preventDefault();
@@ -218,7 +211,9 @@ function createChart(categoryData) {
     options: {
       responsive: true,
       plugins: {
-        legend: { position: "top" },
+        legend: {
+          position: "top",
+        },
         tooltip: {
           callbacks: {
             label: (tooltipItem) => `₹${tooltipItem.raw.toFixed(2)}`,
@@ -286,7 +281,9 @@ function exportToCSV() {
   }));
 
   const csv = Papa.unparse(csvData);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8;",
+  });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
   link.download = "expenses.csv";
