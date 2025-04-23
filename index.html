@@ -147,14 +147,16 @@
                     />
                   </div>
                   <div class="col-md-2">
+                    <label for="expenseDate" class="form-label">Date</label>
                     <input
                       type="date"
                       class="form-control"
                       id="expenseDate"
                       required
-                      onkeydown="return false;"
+                      max="2025-04-23"
                     />
                   </div>
+
                   <div class="col-md-1">
                     <button type="submit" class="btn btn-primary w-100">
                       Add
