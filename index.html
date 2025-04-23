@@ -115,37 +115,49 @@
           <div class="card mb-4">
             <div class="card-body">
               <form id="expenseForm">
-                <div class="row g-3">
+                <div class="row g-3 align-items-end">
+                  <!-- Expense Name -->
                   <div class="col-md-4">
+                    <label for="expenseName" class="form-label"
+                      >Expense Name</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="expenseName"
-                      placeholder="Expense name"
+                      placeholder="e.g., Coffee, Taxi"
                       required
                     />
                   </div>
+
+                  <!-- Expense Category -->
                   <div class="col-md-3">
+                    <label for="expenseCategory" class="form-label"
+                      >Expense Category</label
+                    >
                     <select class="form-select" id="expenseCategory" required>
-                      <option value="" disabled selected>
-                        Select category
-                      </option>
-                      <option value="Food">🍽️ Food</option>
-                      <option value="Travel">✈️ Travel</option>
-                      <option value="Shopping">🛍️ Shopping</option>
-                      <option value="Bills">📄 Bills</option>
-                      <option value="Others">📦 Others</option>
+                      <option value="">Select category</option>
+                      <option>🍽️ Food</option>
+                      <option>✈️ Travel</option>
+                      <option>🛍️ Shopping</option>
+                      <option>📄 Bills</option>
+                      <option>📦 Others</option>
                     </select>
                   </div>
+
+                  <!-- Expense Amount -->
                   <div class="col-md-2">
+                    <label for="expenseAmount" class="form-label">Amount</label>
                     <input
                       type="number"
                       class="form-control"
                       id="expenseAmount"
-                      placeholder="Amount"
+                      placeholder="₹"
                       required
                     />
                   </div>
+
+                  <!-- Expense Date -->
                   <div class="col-md-2">
                     <label for="expenseDate" class="form-label">Date</label>
                     <input
@@ -157,7 +169,9 @@
                     />
                   </div>
 
+                  <!-- Submit Button -->
                   <div class="col-md-1">
+                    <label class="form-label d-block">&nbsp;</label>
                     <button type="submit" class="btn btn-primary w-100">
                       Add
                     </button>
@@ -166,6 +180,7 @@
               </form>
             </div>
           </div>
+
           <!-- Search -->
           <div class="d-flex align-items-center mb-4">
             <input
