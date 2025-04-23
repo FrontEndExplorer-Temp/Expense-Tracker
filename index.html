@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    <!-- Meta Tags -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- SEO -->
     <meta
       name="description"
       content="Track your daily expenses with this simple and powerful expense tracker app."
@@ -14,18 +13,49 @@
       content="expense tracker, budget, money management, finance, personal finance"
     />
     <meta name="author" content="Purushothaman R" />
+
     <!-- Title & Favicon -->
     <title>Expense Tracker</title>
     <link rel="icon" href="assets/images/favicon.ico" type="image/png" />
-    <!-- Bootstrap & Icons -->
+
+    <!-- Performance Optimization for Fonts -->
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Load Poppins Font -->
     <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS (non-blocking) -->
+    <link
+      rel="preload"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    /></noscript>
+
+    <!-- Bootstrap Icons (non-blocking) -->
     <link
+      rel="preload"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-      rel="stylesheet"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    /></noscript>
+
+    <!-- Local Styles -->
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
@@ -268,11 +298,20 @@
         </main>
       </div>
     </div>
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/js/script.js"></script>
+    <!-- Optimized JS Load -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+    <script src="./assets/js/script.js" defer></script>
   </body>
 </html>
