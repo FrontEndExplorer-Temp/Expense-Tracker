@@ -19,15 +19,25 @@
     <link rel="icon" href="assets/images/favicon.ico" type="image/png" />
 
     <!-- Performance Optimization for Fonts -->
-    <!-- Preconnect for Google Fonts -->
+    <!-- Preconnect to Google font domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Load Poppins Font -->
+    <!-- Load fonts non-blocking -->
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+
+    <!-- Fallback for no-JS -->
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      />
+    </noscript>
 
     <!-- Bootstrap CSS (non-blocking) -->
     <link
