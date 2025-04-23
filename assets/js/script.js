@@ -188,8 +188,14 @@ function renderExpenses(data = expenses) {
   });
 }
 
-function createChart(categoryData) {
+async function createChart(categoryData) {
   const ctx = document.getElementById("expensesChart").getContext("2d");
+
+  if (!window.Chart) {
+    const module = await import("https://cdn.jsdelivr.net/npm/chart.js");
+    window.Chart = module.default;
+  }
+
   if (expenseChart) expenseChart.destroy();
 
   const labels = Object.keys(categoryData);
@@ -211,9 +217,7 @@ function createChart(categoryData) {
     options: {
       responsive: true,
       plugins: {
-        legend: {
-          position: "top",
-        },
+        legend: { position: "top" },
         tooltip: {
           callbacks: {
             label: (tooltipItem) => `₹${tooltipItem.raw.toFixed(2)}`,
@@ -290,13 +294,15 @@ function exportToCSV() {
   link.click();
 }
 
-function exportToPDF() {
+async function exportToPDF() {
   if (!currentlyRenderedExpenses.length) {
     alert("No expenses to export.");
     return;
   }
 
-  const { jsPDF } = window.jspdf;
+  const { jsPDF } = await import(
+    "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  );
   const doc = new jsPDF();
 
   doc.setFontSize(18);
@@ -309,15 +315,12 @@ function exportToPDF() {
   doc.text("Date", 150, 30);
 
   let y = 40;
-
   currentlyRenderedExpenses.forEach((exp) => {
     doc.text(exp.name, 20, y);
     doc.text(exp.category, 70, y);
     doc.text(`₹${exp.amount.toFixed(2)}`, 110, y);
     doc.text(formatDate(exp.date), 150, y);
     y += 10;
-
-    // Avoid writing off the page
     if (y > 280) {
       doc.addPage();
       y = 20;
